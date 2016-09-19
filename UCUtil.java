@@ -1,3 +1,4 @@
+package com.github.shuiguang.utils;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.util.Date;
@@ -244,11 +245,16 @@ public class UCUtil {
         out += (char) ((c1 << 2) | ((c2 & 0x30) >> 4)) + ""; 
 
         /* c3 */ 
-        do { 
-            c3 = ((int) str.charAt(i++) & 0xff); 
-            if(c3 == 61) 
-            return out; 
-            c3 = base64DecodeChars[c3]; 
+        do {
+        	// 与js差异之二
+        	try {
+        		c3 = ((int) str.charAt(i++) & 0xff); 
+                if(c3 == 61) 
+                return out; 
+                c3 = base64DecodeChars[c3]; 
+        	} catch (Exception e) {
+        		c3 = -1;
+            }
         } while(i < len && c3 == -1); 
         if(c3 == -1) 
             break; 
@@ -256,7 +262,7 @@ public class UCUtil {
 
         /* c4 */ 
         do {
-            // 与js差异之二
+            // 与js差异之三
             try{
                 c4 = (int) str.charAt(i++) & 0xff;
                 if(c4 == 61) 
